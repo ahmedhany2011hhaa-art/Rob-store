@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>لوحة الأدمن | RBX Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--g:#00b06b;--r:#dc2626;--y:#fbbf24;--bg:#03050a;--card:rgba(5,10,20,.97);--bdr:rgba(0,100,255,.1)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:#fff;font-family:'Cairo',sans-serif;overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(0,100,255,.02)1px,transparent 1px),linear-gradient(90deg,rgba(0,100,255,.02)1px,transparent 1px);background-size:40px 40px}
+body::after{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:500px;z-index:0;pointer-events:none;background:radial-gradient(ellipse,rgba(0,100,255,.1)0%,transparent 70%)}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;z-index:10}
+.login-card{background:var(--card);border:1px solid rgba(0,100,255,.2);border-radius:2rem;padding:28px 22px;max-width:360px;width:100%;text-align:center}
+.admin-ico{font-size:2.5rem;margin-bottom:12px}
+.login-title{font-size:1.2rem;font-weight:900;margin-bottom:4px}
+.login-sub{font-size:.72rem;color:#555;margin-bottom:20px}
+.ainp{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:12px 14px;color:white;font-family:'Cairo',sans-serif;font-size:.9rem;outline:none;margin-bottom:10px;text-align:center;transition:border-color .2s}
+.ainp:focus{border-color:rgba(0,100,255,.5)}
+.ainp::placeholder{color:#252525}
+.login-btn{width:100%;background:linear-gradient(135deg,#1d4ed8,#1e3a8a);color:white;border:none;border-radius:1rem;padding:13px;font-family:'Cairo',sans-serif;font-size:.95rem;font-weight:900;cursor:pointer;box-shadow:0 6px 20px rgba(29,78,216,.25)}
+
+/* ADMIN DASHBOARD */
+.wrap{max-width:520px;margin:0 auto;padding:14px 14px 30px;position:relative;z-index:10}
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 0;margin-bottom:16px}
+.htitle{font-size:1.1rem;font-weight:900}
+.out-btn{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.2);color:#f87171;padding:7px 14px;border-radius:1rem;font-family:'Cairo',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.sb{background:var(--card);border:1px solid var(--bdr);border-radius:1.2rem;padding:12px 8px;text-align:center}
+.sv{font-size:1.1rem;font-weight:900;color:var(--y)}
+.sl{font-size:.6rem;color:#444;margin-top:2px}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 16px;border-radius:2rem;font-family:'Cairo',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:#444;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.tab.on{background:rgba(0,100,255,.12);color:#60a5fa;border-color:rgba(0,100,255,.35)}
+
+/* SECTION */
+.sec{background:var(--card);border:1px solid var(--bdr);border-radius:1.4rem;padding:16px;margin-bottom:12px}
+.sec-title{font-size:.75rem;font-weight:900;color:#60a5fa;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+
+/* ORDER CARD */
+.order-item{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:1.1rem;padding:14px;margin-bottom:8px;transition:border-color .2s}
+.order-item.pending{border-color:rgba(251,191,36,.2)}
+.order-item.approved{border-color:rgba(0,176,107,.2)}
+.order-item.rejected{border-color:rgba(220,38,38,.15);opacity:.6}
+.oi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.oi-left .oi-user{font-size:.9rem;font-weight:900}
+.oi-left .oi-id{font-size:.62rem;color:#444;font-family:monospace}
+.oi-status{padding:4px 10px;border-radius:2rem;font-size:.6rem;font-weight:900}
+.st-pending{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:#fbbf24}
+.st-approved{background:rgba(0,176,107,.1);border:1px solid rgba(0,176,107,.25);color:#4ade80}
+.st-rejected{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.2);color:#f87171}
+.oi-info{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.oi-field{background:rgba(255,255,255,.03);border-radius:.75rem;padding:7px 10px}
+.oi-key{font-size:.58rem;color:#444;margin-bottom:1px}
+.oi-val{font-size:.8rem;font-weight:900}
+.oi-img{width:100%;border-radius:.85rem;max-height:180px;object-fit:cover;margin-bottom:10px;cursor:pointer}
+.oi-img:active{opacity:.8}
+.oi-actions{display:flex;gap:7px}
+.act-btn{flex:1;padding:10px;border-radius:.85rem;font-family:'Cairo',sans-serif;font-size:.78rem;font-weight:900;cursor:pointer;border:none;transition:all .2s}
+.act-ok{background:linear-gradient(135deg,#00b06b,#008a52);color:white}
+.act-no{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.2);color:#f87171}
+.act-ok:active,.act-no:active{transform:scale(.97)}
+
+/* PLINKO CONTROL */
+.plinko-games{display:flex;flex-direction:column;gap:8px}
+.pg-item{background:rgba(255,255,255,.02);border:1px solid rgba(251,191,36,.15);border-radius:1.1rem;padding:14px}
+.pg-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.pg-user{font-size:.85rem;font-weight:900}
+.pg-bet{font-size:.8rem;color:var(--y);font-weight:900}
+.slot-selector{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px}
+.slot-pick{padding:6px 2px;border-radius:.6rem;text-align:center;font-size:.6rem;font-weight:900;cursor:pointer;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:#555;transition:all .2s}
+.slot-pick.selected{background:rgba(251,191,36,.15);border-color:rgba(251,191,36,.4);color:#fbbf24}
+.pg-send{width:100%;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#000;border:none;border-radius:.85rem;padding:10px;font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:900;cursor:pointer}
+.pg-send:disabled{opacity:.4;cursor:not-allowed}
+.pg-preview{display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:.7rem;color:#555}
+.pg-multi-preview{font-size:1rem;font-weight:900;color:var(--y)}
+
+/* SETTINGS */
+.sinp{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:11px 14px;color:white;font-family:'Cairo',sans-serif;font-size:.88rem;outline:none;margin-bottom:10px;transition:border-color .2s;text-align:center}
+.sinp:focus{border-color:rgba(0,100,255,.5)}
+.save-btn{background:linear-gradient(135deg,#1d4ed8,#1e3a8a);color:white;border:none;border-radius:1rem;padding:11px 20px;font-family:'Cairo',sans-serif;font-size:.85rem;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(29,78,216,.25)}
+
+/* TOAST */
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-80px);background:#111;border:1px solid rgba(255,255,255,.07);color:white;padding:10px 22px;border-radius:2rem;font-size:.8rem;font-weight:700;z-index:99999;transition:transform .3s;white-space:nowrap;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.g{border-right:3px solid #22c55e}
+.toast.r{border-right:3px solid #dc2626}
+
+.empty{text-align:center;padding:20px;color:#333;font-size:.78rem}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-card">
+    <div class="admin-ico">🔐</div>
+    <div class="login-title">لوحة الأدمن</div>
+    <div class="login-sub">ادخل بيانات الدخول</div>
+    <input class="ainp" type="text" id="adm-user" placeholder="اسم المستخدم">
+    <input class="ainp" type="password" id="adm-pass" placeholder="كلمة المرور">
+    <button class="login-btn" onclick="doAdminLogin()">دخول ⚙️</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="wrap" id="dashboard" style="display:none">
+  <div class="hdr">
+    <div class="htitle">⚙️ لوحة الأدمن</div>
+    <button class="out-btn" onclick="adminLogout()">خروج 🚪</button>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="sb"><div class="sv" id="stat-pending">0</div><div class="sl">طلبات معلقة</div></div>
+    <div class="sb"><div class="sv" id="stat-total">0</div><div class="sl">إجمالي الطلبات</div></div>
+    <div class="sb"><div class="sv" id="stat-plinko">0</div><div class="sl">ألعاب منتظرة</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab on" onclick="showTab('orders',this)">📦 الطلبات</button>
+    <button class="tab" onclick="showTab('plinko',this)">🎰 بلينكو</button>
+    <button class="tab" onclick="showTab('settings',this)">⚙️ الإعدادات</button>
+  </div>
+
+  <!-- ORDERS TAB -->
+  <div id="tab-orders">
+    <div class="sec">
+      <div class="sec-title">📦 طلبات الشراء المعلقة</div>
+      <div id="orders-list"><div class="empty">لا توجد طلبات معلقة</div></div>
+    </div>
+    <div class="sec">
+      <div class="sec-title">✅ الطلبات المنجزة</div>
+      <div id="done-list"><div class="empty">لا توجد طلبات منجزة</div></div>
+    </div>
+  </div>
+
+  <!-- PLINKO TAB -->
+  <div id="tab-plinko" style="display:none">
+    <div class="sec">
+      <div class="sec-title">🎰 ألعاب بلينكو المنتظرة</div>
+      <div class="plinko-games" id="plinko-list"><div class="empty">لا توجد ألعاب منتظرة</div></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS TAB -->
+  <div id="tab-settings" style="display:none">
+    <div class="sec">
+      <div class="sec-title">📱 رقم التحويل</div>
+      <div style="font-size:.72rem;color:#444;margin-bottom:8px">الرقم الذي سيظهر للمشترين</div>
+      <input class="sinp" id="transfer-num-inp" placeholder="01xxxxxxxxx" dir="ltr" type="tel">
+      <button class="save-btn" onclick="saveTransferNum()">💾 حفظ</button>
+    </div>
+    <div class="sec">
+      <div class="sec-title">🔑 تغيير كلمة المرور</div>
+      <input class="sinp" id="new-pass" type="password" placeholder="كلمة المرور الجديدة">
+      <button class="save-btn" onclick="savePassword()">💾 حفظ</button>
+    </div>
+    <div class="sec">
+      <div class="sec-title">📊 إعدادات بلينكو</div>
+      <div style="font-size:.72rem;color:#444;margin-bottom:8px">الحد الأدنى للرهان</div>
+      <input class="sinp" id="min-bet" type="number" value="10" min="1">
+      <button class="save-btn" onclick="saveSettings()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getDatabase, ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+const db=getDatabase(initializeApp({
+  apiKey:"AIzaSyCd6mOpEJyiUSAAhmm2NbhT80MMY0UQJcc",
+  databaseURL:"https://project-fe025bb5-b1cc-4b8f-93e-default-rtdb.firebaseio.com"
+}));
+
+// SLOTS
+const SLOTS=[0.2,0.5,1,1.5,2,3,5,3,2,1.5,1,0.5,0.2];
+
+// DEFAULT CREDS (can be changed in settings)
+let adminCreds={user:'admin',pass:'rbx2024'};
+let isLoggedIn=sessionStorage.getItem('rbx_admin')==='1';
+
+function toast(m,t='g'){const e=document.getElementById('toast');e.textContent=m;e.className=`toast show ${t}`;setTimeout(()=>e.className='toast',2500);}
+
+// Init
+(async()=>{
+  const s=await get(ref(db,'rbx_store/settings'));
+  if(s.exists()){
+    const d=s.val();
+    if(d.admin_pass)adminCreds.pass=d.admin_pass;
+    if(d.transfer_num)document.getElementById('transfer-num-inp').value=d.transfer_num;
+    if(d.min_bet)document.getElementById('min-bet').value=d.min_bet;
+  }
+  if(isLoggedIn)showDashboard();
+})();
+
+window.doAdminLogin=async()=>{
+  const u=document.getElementById('adm-user').value.trim();
+  const p=document.getElementById('adm-pass').value;
+  const s=await get(ref(db,'rbx_store/settings'));
+  const storedPass=s.exists()&&s.val().admin_pass?s.val().admin_pass:'rbx2024';
+  if(u==='admin'&&p===storedPass){
+    sessionStorage.setItem('rbx_admin','1');
+    isLoggedIn=true;showDashboard();
+  } else {toast('❌ بيانات خاطئة','r');}
+};
+
+window.adminLogout=()=>{sessionStorage.removeItem('rbx_admin');window.location.reload();};
+
+function showDashboard(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  loadOrders();loadPlinkoGames();
+}
+
+window.showTab=(tab,el)=>{
+  document.querySelectorAll('[id^=tab-]').forEach(t=>t.style.display='none');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('tab-'+tab).style.display='block';
+  el.classList.add('on');
+};
+
+// ---- ORDERS ----
+function loadOrders(){
+  onValue(ref(db,'rbx_store/orders'),snap=>{
+    const pending=[],done=[];
+    let totalCount=0;
+    snap.forEach(o=>{const d={id:o.key,...o.val()};totalCount++;if(d.status==='pending')pending.push(d);else done.push(d);});
+    document.getElementById('stat-pending').textContent=pending.length;
+    document.getElementById('stat-total').textContent=totalCount;
+    renderOrders(pending,'orders-list',true);
+    renderOrders(done.slice(0,10),'done-list',false);
+  });
+}
+
+function renderOrders(orders,containerId,showActions){
+  const el=document.getElementById(containerId);
+  if(!orders.length){el.innerHTML='<div class="empty">لا توجد طلبات</div>';return;}
+  el.innerHTML=orders.map(o=>`
+    <div class="order-item ${o.status}" id="order-${o.id}">
+      <div class="oi-top">
+        <div class="oi-left">
+          <div class="oi-user">👤 ${o.username}</div>
+          <div class="oi-id">${o.orderId||o.id}</div>
+        </div>
+        <div class="oi-status st-${o.status}">${o.status==='pending'?'⏳ معلق':o.status==='approved'?'✅ تمت الموافقة':'❌ مرفوض'}</div>
+      </div>
+      <div class="oi-info">
+        <div class="oi-field"><div class="oi-key">الروبوكس</div><div class="oi-val" style="color:#00b06b">${o.rbx} R$</div></div>
+        <div class="oi-field"><div class="oi-key">المبلغ</div><div class="oi-val" style="color:#fbbf24">${o.price} ج</div></div>
+        <div class="oi-field"><div class="oi-key">الهاتف</div><div class="oi-val">${o.phone||'—'}</div></div>
+        <div class="oi-field"><div class="oi-key">التاريخ</div><div class="oi-val" style="font-size:.65rem">${o.date||'—'}</div></div>
+      </div>
+      ${o.notes?`<div style="font-size:.7rem;color:#555;margin-bottom:8px;background:rgba(255,255,255,.03);padding:7px 10px;border-radius:.75rem">📝 ${o.notes}</div>`:''}
+      ${o.imageBase64?`<img class="oi-img" src="${o.imageBase64}" onclick="window.open('${o.imageBase64}')">`: '<div style="background:rgba(255,0,0,.05);border:1px dashed rgba(255,0,0,.15);border-radius:.75rem;padding:10px;text-align:center;font-size:.7rem;color:#555;margin-bottom:10px">لا توجد صورة</div>'}
+      ${showActions?`<div class="oi-actions">
+        <button class="act-btn act-ok" onclick="approveOrder('${o.id}','${o.username}','${o.rbx}')">✅ موافقة وإيداع</button>
+        <button class="act-btn act-no" onclick="rejectOrder('${o.id}')">❌ رفض</button>
+      </div>`:''}
+    </div>`).join('');
+}
+
+window.approveOrder=async(id,user,rbx)=>{
+  if(!confirm(`موافقة وإيداع ${rbx} روبوكس للمستخدم ${user}؟`))return;
+  await update(ref(db,`rbx_store/orders/${id}`),{status:'approved',approvedAt:Date.now()});
+  toast(`✅ تمت الموافقة على طلب ${user}`);
+};
+
+window.rejectOrder=async(id)=>{
+  if(!confirm('رفض هذا الطلب؟'))return;
+  await update(ref(db,`rbx_store/orders/${id}`),{status:'rejected',rejectedAt:Date.now()});
+  toast('تم رفض الطلب','r');
+};
+
+// ---- PLINKO ----
+function loadPlinkoGames(){
+  onValue(ref(db,'rbx_store/plinko_games'),snap=>{
+    const waiting=[];
+    snap.forEach(g=>{const d={id:g.key,...g.val()};if(d.status==='waiting')waiting.push(d);});
+    document.getElementById('stat-plinko').textContent=waiting.length;
+    renderPlinkoGames(waiting);
+  });
+}
+
+function renderPlinkoGames(games){
+  const el=document.getElementById('plinko-list');
+  if(!games.length){el.innerHTML='<div class="empty">لا توجد ألعاب منتظرة</div>';return;}
+  el.innerHTML=games.map(g=>`
+    <div class="pg-item">
+      <div class="pg-header">
+        <div class="pg-user">👤 ${g.user}</div>
+        <div class="pg-bet">💰 ${g.bet} ج</div>
+      </div>
+      <div style="font-size:.68rem;color:#555;margin-bottom:8px">اختر الخانة التي ستقع فيها الكرة (${new Date(g.timestamp).toLocaleTimeString('ar-EG')})</div>
+      <div class="slot-selector" id="ss-${g.id}">
+        ${SLOTS.map((m,i)=>`<div class="slot-pick" onclick="selectSlot('${g.id}',${i},this)" style="color:${m>=3?'#fbbf24':m>=1?'#4ade80':'#f87171'}">${m}x</div>`).join('')}
+      </div>
+      <div class="pg-preview" id="prev-${g.id}">
+        <span>المضاعف المختار:</span>
+        <span class="pg-multi-preview">—</span>
+        <span>الربح المحتمل: <strong id="win-prev-${g.id}">—</strong></span>
+      </div>
+      <button class="pg-send" id="send-${g.id}" onclick="resolveGame('${g.id}','${g.user}',${g.bet})" disabled>🎯 إرسال النتيجة</button>
+    </div>`).join('');
+}
+
+let selectedSlots={};
+window.selectSlot=(gameId,slotIdx,el)=>{
+  document.querySelectorAll(`#ss-${gameId} .slot-pick`).forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSlots[gameId]=slotIdx;
+  const multi=SLOTS[slotIdx];
+  document.getElementById(`prev-${gameId}`).querySelector('.pg-multi-preview').textContent=multi+'x';
+  // Get bet amount
+  const betEl=document.querySelector(`[id="send-${gameId}"]`).closest('.pg-item').querySelector('.pg-bet');
+  const bet=parseInt(betEl.textContent.replace('💰','').replace('ج','').trim());
+  document.getElementById(`win-prev-${gameId}`).textContent=`${Math.floor(bet*multi)} ج`;
+  document.getElementById(`send-${gameId}`).disabled=false;
+};
+
+window.resolveGame=async(gameId,user,bet)=>{
+  const slotIdx=selectedSlots[gameId];
+  if(slotIdx===undefined){toast('اختر خانة أولاً','r');return;}
+  const multi=SLOTS[slotIdx];
+  const win=Math.floor(bet*multi);
+  if(!confirm(`إرسال نتيجة ${multi}x للاعب ${user}؟ سيربح ${win} ج`))return;
+  await update(ref(db,`rbx_store/plinko_games/${gameId}`),{
+    status:'resolved',slotIndex:slotIdx,multi,win,resolvedAt:Date.now()
+  });
+  toast(`✅ تم إرسال نتيجة ${multi}x للاعب ${user}`);
+  delete selectedSlots[gameId];
+};
+
+// ---- SETTINGS ----
+window.saveTransferNum=async()=>{
+  const num=document.getElementById('transfer-num-inp').value.trim();
+  if(!num){toast('أدخل رقم التحويل','r');return;}
+  await update(ref(db,'rbx_store/settings'),{transfer_num:num});
+  toast('✅ تم حفظ رقم التحويل');
+};
+
+window.savePassword=async()=>{
+  const p=document.getElementById('new-pass').value;
+  if(!p||p.length<4){toast('كلمة المرور قصيرة جداً','r');return;}
+  await update(ref(db,'rbx_store/settings'),{admin_pass:p});
+  toast('✅ تم تغيير كلمة المرور');
+};
+
+window.saveSettings=async()=>{
+  const min=parseInt(document.getElementById('min-bet').value);
+  await update(ref(db,'rbx_store/settings'),{min_bet:min||10});
+  toast('✅ تم حفظ الإعدادات');
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>بلينكو | RBX Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--g:#00b06b;--y:#fbbf24;--bg:#050a06;--card:rgba(0,20,10,.95);--bdr:rgba(0,176,107,.12)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:#fff;font-family:'Cairo',sans-serif;overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(251,191,36,.02)1px,transparent 1px),linear-gradient(90deg,rgba(251,191,36,.02)1px,transparent 1px);background-size:40px 40px}
+body::after{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:500px;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse,rgba(251,191,36,.1)0%,transparent 70%)}
+
+.wrap{max-width:480px;margin:0 auto;padding:14px 14px 90px;position:relative;z-index:10}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:10px 0}
+.back{width:38px;height:38px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#666;font-size:1rem}
+.htitle{font-size:1.1rem;font-weight:900}
+.bal-chip{background:rgba(0,176,107,.08);border:1px solid rgba(0,176,107,.2);border-radius:2rem;padding:7px 14px;font-size:.9rem;font-weight:900;color:var(--g)}
+
+/* USER STATUS */
+.user-card{background:var(--card);border:1px solid var(--bdr);border-radius:1.4rem;padding:14px;margin-bottom:12px}
+.uc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.uc-name-wrap{display:flex;align-items:center;gap:8px}
+.uc-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#00b06b,#005c38);display:flex;align-items:center;justify-content:center;font-size:1rem}
+.uc-name{font-size:.88rem;font-weight:900}
+.uc-id{font-size:.62rem;color:#444}
+.uc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.ucs{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:.85rem;padding:8px 6px;text-align:center}
+.ucsv{font-size:.92rem;font-weight:900;color:var(--g)}
+.ucsl{font-size:.58rem;color:#444;margin-top:1px}
+
+/* QUEUE STATUS */
+.queue-info{background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.15);border-radius:1rem;padding:10px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.qi-txt{font-size:.75rem;color:#fbbf24}
+.qi-badge{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);border-radius:2rem;padding:3px 10px;font-size:.65rem;font-weight:900;color:#fbbf24}
+
+/* BOARD */
+.board-wrap{background:linear-gradient(145deg,rgba(10,25,15,.98),rgba(3,8,4,.99));border:1px solid rgba(0,176,107,.15);border-radius:1.75rem;padding:18px 14px;margin-bottom:12px;position:relative;overflow:hidden}
+.board-wrap::before{content:'';position:absolute;top:-50px;left:50%;transform:translateX(-50%);width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,.08),transparent 70%)}
+.board-title{text-align:center;font-size:.7rem;font-weight:900;color:#444;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.board{position:relative;width:100%;height:260px}
+.pin{position:absolute;width:10px;height:10px;background:#1a3320;border-radius:50%;transform:translate(-50%,-50%);border:1px solid rgba(0,176,107,.2);transition:all .2s}
+.pin.glow{background:var(--g);border-color:var(--g);box-shadow:0 0 10px rgba(0,176,107,.7)}
+.ball{position:absolute;width:18px;height:18px;background:linear-gradient(135deg,#fbbf24,#f59e0b);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 14px rgba(251,191,36,.6);display:none;z-index:10;transition:all .15s ease}
+.slot-row{display:flex;gap:3px;margin-top:8px}
+.slot{flex:1;padding:7px 2px;border-radius:.65rem;text-align:center;font-size:.58rem;font-weight:900;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.03);position:relative;overflow:hidden;transition:all .3s}
+.slot.active-slot{animation:slotWin .5s ease}
+@keyframes slotWin{0%,100%{transform:scale(1)}30%{transform:scale(1.2)}60%{transform:scale(.95)}}
+.slot-val{font-size:.6rem}
+
+/* BET AREA */
+.bet-card{background:var(--card);border:1px solid var(--bdr);border-radius:1.4rem;padding:16px;margin-bottom:12px}
+.blabel{font-size:.72rem;font-weight:900;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.bet-row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.bet-inp{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:12px 14px;color:white;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:900;outline:none;text-align:center;transition:border-color .2s}
+.bet-inp:focus{border-color:rgba(0,176,107,.5)}
+.curr{font-size:.8rem;color:#555;flex-shrink:0}
+.qbtns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.qb{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:.85rem;padding:9px 4px;font-family:'Cairo',sans-serif;font-size:.72rem;font-weight:700;color:#666;cursor:pointer;transition:all .2s}
+.qb:active{background:rgba(0,176,107,.1);color:var(--g);border-color:rgba(0,176,107,.3)}
+.min-note{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.15);border-radius:.75rem;padding:7px 12px;font-size:.65rem;color:#fbbf24;margin-bottom:12px}
+
+/* LOGIN STATE */
+.login-required{text-align:center;padding:20px;display:none}
+.login-inp{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:12px 14px;color:white;font-family:'Cairo',sans-serif;font-size:.9rem;outline:none;margin-bottom:10px;transition:border-color .2s;text-align:center;direction:ltr}
+.login-inp:focus{border-color:rgba(0,176,107,.5)}
+.login-inp::placeholder{color:#252525}
+
+/* BUTTONS */
+.gbtn{width:100%;border:none;border-radius:1.1rem;padding:14px;font-family:'Cairo',sans-serif;font-size:.95rem;font-weight:900;cursor:pointer;transition:all .2s}
+.btn-drop{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#000;box-shadow:0 8px 24px rgba(251,191,36,.25)}
+.btn-drop:active{transform:scale(.98)}
+.btn-drop:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-login{background:linear-gradient(135deg,#00b06b,#008a52);color:white;box-shadow:0 6px 20px rgba(0,176,107,.22)}
+
+/* HISTORY */
+.hist{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.hchip{padding:4px 10px;border-radius:2rem;font-size:.65rem;font-weight:900}
+.hw{background:rgba(0,176,107,.1);border:1px solid rgba(0,176,107,.25);color:#4ade80}
+.hl{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.25);color:#f87171}
+
+/* RESULTS PANEL */
+.result-panel{background:var(--card);border:1px solid var(--bdr);border-radius:1.4rem;padding:14px;margin-bottom:10px}
+.rp-title{font-size:.72rem;font-weight:900;color:#444;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.rp-row{display:flex;justify-content:space-between;font-size:.75rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.rp-row:last-child{border-bottom:none}
+
+/* TOAST */
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-80px);background:#111;border:1px solid rgba(255,255,255,.07);color:white;padding:10px 22px;border-radius:2rem;font-size:.8rem;font-weight:700;z-index:99999;transition:transform .3s;white-space:nowrap;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.g{border-right:3px solid #22c55e}
+.toast.r{border-right:3px solid #dc2626}
+
+.bot-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(3,7,4,.96);backdrop-filter:blur(20px);border-top:1px solid rgba(0,176,107,.08);display:flex;justify-content:space-around;padding:10px 4px;padding-bottom:max(10px,env(safe-area-inset-bottom));z-index:1000}
+.bnl{font-size:9px;color:#2a2a2a;text-align:center;text-decoration:none;padding:5px 9px;border-radius:1.5rem;transition:all .2s}
+.bnl.active{color:var(--g);background:rgba(0,176,107,.1);font-weight:900}
+.bni{font-size:1.1rem;display:block;margin-bottom:1px}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<div class="wrap">
+  <div class="hdr">
+    <a href="index.html" class="back">←</a>
+    <div class="htitle">🎰 بلينكو</div>
+    <div class="bal-chip">رصيدك: <span id="user-bal">0</span> ج</div>
+  </div>
+
+  <!-- USER NOT LOGGED IN -->
+  <div id="login-section">
+    <div style="background:var(--card);border:1px solid var(--bdr);border-radius:1.4rem;padding:20px;text-align:center;margin-bottom:12px">
+      <div style="font-size:2.5rem;margin-bottom:10px">🎰</div>
+      <div style="font-size:.9rem;font-weight:900;margin-bottom:6px">سجّل دخولك للعب</div>
+      <div style="font-size:.68rem;color:#444;margin-bottom:14px">أدخل يوزرنيم Roblox الخاص بك</div>
+      <input class="login-inp" id="login-user" type="text" placeholder="YourUsername123">
+      <input class="login-inp" id="login-balance" type="number" min="10" placeholder="رصيدك الابتدائي بالجنيه (أدنى 10)" style="margin-top:6px">
+      <button class="gbtn btn-login" onclick="doLogin()" style="margin-top:4px">دخول للعب 🎮</button>
+    </div>
+  </div>
+
+  <!-- GAME SECTION (hidden until login) -->
+  <div id="game-section" style="display:none">
+    <!-- USER CARD -->
+    <div class="user-card">
+      <div class="uc-top">
+        <div class="uc-name-wrap">
+          <div class="uc-av">👤</div>
+          <div><div class="uc-name" id="disp-name">—</div><div class="uc-id">Roblox Player</div></div>
+        </div>
+        <button onclick="logout()" style="background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.15);color:#f87171;padding:5px 12px;border-radius:1rem;font-family:'Cairo',sans-serif;font-size:.68rem;font-weight:700;cursor:pointer">خروج</button>
+      </div>
+      <div class="uc-stats">
+        <div class="ucs"><div class="ucsv" id="stat-bal">0</div><div class="ucsl">الرصيد ج</div></div>
+        <div class="ucs"><div class="ucsv" id="stat-games">0</div><div class="ucsl">ألعاب</div></div>
+        <div class="ucs"><div class="ucsv" id="stat-wins">0</div><div class="ucsl">فوز</div></div>
+      </div>
+    </div>
+
+    <!-- QUEUE INFO -->
+    <div class="queue-info" id="queue-info">
+      <span class="qi-txt">🔴 الأدمن يتحكم بنتيجتك — انتظر...</span>
+      <span class="qi-badge" id="queue-pos">انتظر</span>
+    </div>
+
+    <!-- BOARD -->
+    <div class="board-wrap">
+      <div class="board-title">🎰 لوحة بلينكو</div>
+      <div class="board" id="board">
+        <div class="ball" id="ball"></div>
+      </div>
+      <div class="slot-row" id="slot-row"></div>
+    </div>
+
+    <!-- BET -->
+    <div class="bet-card">
+      <div class="blabel">💰 مبلغ اللعبة</div>
+      <div class="bet-row">
+        <input class="bet-inp" type="number" id="bet-inp" value="10" min="10">
+        <span class="curr">جنيه</span>
+      </div>
+      <div class="qbtns">
+        <button class="qb" onclick="setBet(10)">10</button>
+        <button class="qb" onclick="setBet(25)">25</button>
+        <button class="qb" onclick="setBet(50)">50</button>
+        <button class="qb" onclick="setBet(100)">100</button>
+      </div>
+      <div class="min-note">⚠️ الحد الأدنى 10 جنيه — الأدمن يحدد نتيجة كل جولة</div>
+      <button class="gbtn btn-drop" id="drop-btn" onclick="requestDrop()">🎯 إلعب الآن</button>
+      <div class="hist" id="hist"></div>
+    </div>
+
+    <!-- RECENT RESULTS -->
+    <div class="result-panel">
+      <div class="rp-title">📊 نتائجك الأخيرة</div>
+      <div id="results-list"><div style="font-size:.72rem;color:#333;text-align:center;padding:10px">لا توجد نتائج بعد</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="bot-nav">
+  <a href="index.html" class="bnl"><span class="bni">🏠</span>الرئيسية</a>
+  <a href="buy.html" class="bnl"><span class="bni">🛒</span>شراء</a>
+  <a href="plinko.html" class="bnl active"><span class="bni">🎰</span>بلينكو</a>
+  <a href="admin.html" class="bnl"><span class="bni">⚙️</span>أدمن</a>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getDatabase, ref, onValue, push, set, update, get, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+const db=getDatabase(initializeApp({
+  apiKey:"AIzaSyCd6mOpEJyiUSAAhmm2NbhT80MMY0UQJcc",
+  databaseURL:"https://project-fe025bb5-b1cc-4b8f-93e-default-rtdb.firebaseio.com"
+}));
+
+// SLOTS CONFIG
+const SLOTS=[0.2,0.5,1,1.5,2,3,5,3,2,1.5,1,0.5,0.2];
+const ROWS=9;
+let userSession=JSON.parse(localStorage.getItem('rbx_plinko')||'null');
+let dropping=false,pendingGameId=null;
+let myGames=[];
+
+// ---- BOARD BUILD ----
+function buildBoard(){
+  const board=document.getElementById('board');
+  board.querySelectorAll('.pin').forEach(p=>p.remove());
+  const W=board.offsetWidth||340,H=260;
+  for(let row=0;row<ROWS;row++){
+    const pins=row+3;
+    for(let col=0;col<pins;col++){
+      const pin=document.createElement('div');
+      pin.className='pin';
+      const x=W/2+(col-(pins-1)/2)*((W-30)/(ROWS+1));
+      const y=20+(row*(H-40)/(ROWS-1));
+      pin.style.left=x+'px';pin.style.top=y+'px';
+      board.appendChild(pin);
+    }
+  }
+  // Build slot row
+  document.getElementById('slot-row').innerHTML=SLOTS.map((m,i)=>{
+    const clr=m>=5?'#fbbf24':m>=2?'#4ade80':m>=1?'#60a5fa':'#f87171';
+    return`<div class="slot" id="slot-${i}" style="border-color:rgba(255,255,255,.06);color:${clr}"><div class="slot-val">${m}x</div></div>`;
+  }).join('');
+}
+setTimeout(buildBoard,100);
+
+function toast(m,t='g'){const e=document.getElementById('toast');e.textContent=m;e.className=`toast show ${t}`;setTimeout(()=>e.className='toast',2500);}
+window.setBet=v=>{document.getElementById('bet-inp').value=v;};
+
+// ---- SESSION ----
+window.doLogin=()=>{
+  const user=document.getElementById('login-user').value.trim();
+  const bal=parseInt(document.getElementById('login-balance').value);
+  if(!user){toast('❌ أدخل يوزرنيمك','r');return;}
+  if(!bal||bal<10){toast('❌ الحد الأدنى 10 جنيه','r');return;}
+  userSession={user,balance:bal,games:0,wins:0};
+  localStorage.setItem('rbx_plinko',JSON.stringify(userSession));
+  showGame();
+};
+
+window.logout=()=>{
+  localStorage.removeItem('rbx_plinko');
+  userSession=null;
+  document.getElementById('login-section').style.display='block';
+  document.getElementById('game-section').style.display='none';
+};
+
+function showGame(){
+  document.getElementById('login-section').style.display='none';
+  document.getElementById('game-section').style.display='block';
+  updateUI();
+  listenForResults();
+}
+
+function updateUI(){
+  document.getElementById('user-bal').textContent=userSession.balance;
+  document.getElementById('disp-name').textContent=userSession.user;
+  document.getElementById('stat-bal').textContent=userSession.balance;
+  document.getElementById('stat-games').textContent=userSession.games;
+  document.getElementById('stat-wins').textContent=userSession.wins;
+}
+
+// ---- GAME REQUEST ----
+window.requestDrop=async()=>{
+  if(dropping){toast('⏳ انتظر انتهاء الجولة الحالية');return;}
+  const bet=parseInt(document.getElementById('bet-inp').value);
+  if(!bet||bet<10){toast('❌ الحد الأدنى 10 جنيه','r');return;}
+  if(bet>userSession.balance){toast('❌ رصيدك غير كافي','r');return;}
+
+  dropping=true;
+  document.getElementById('drop-btn').disabled=true;
+
+  // Deduct bet immediately
+  userSession.balance-=bet;
+  updateUI();
+
+  // Push game request to firebase (admin will set slot)
+  const gameRef=await push(ref(db,'rbx_store/plinko_games'),{
+    user:userSession.user,
+    bet,
+    status:'waiting',
+    timestamp:Date.now(),
+    slotIndex:null // admin will fill this
+  });
+  pendingGameId=gameRef.key;
+  document.getElementById('queue-info').style.background='rgba(251,191,36,.08)';
+  document.getElementById('queue-pos').textContent='⏳ ينتظر الأدمن...';
+  toast('✅ تم إرسال طلبك! انتظر نتيجة الأدمن');
+};
+
+// ---- LISTEN FOR ADMIN RESULT ----
+function listenForResults(){
+  onValue(ref(db,'rbx_store/plinko_games'),snap=>{
+    snap.forEach(g=>{
+      const data=g.val();
+      if(data.user===userSession.user&&data.status==='resolved'&&data.slotIndex!==null){
+        // Check if we already processed this
+        if(myGames.includes(g.key))return;
+        myGames.push(g.key);
+        processResult(g.key,data);
+      }
+    });
+  });
+}
+
+async function processResult(gid,data){
+  if(gid!==pendingGameId&&pendingGameId)return; // Not our pending game
+  const slotIdx=data.slotIndex;
+  const multi=SLOTS[slotIdx];
+  const win=Math.floor(data.bet*multi);
+  const profit=win-data.bet;
+
+  // Animate ball drop to this slot
+  await animateBall(slotIdx);
+
+  // Update balance
+  userSession.balance+=win;
+  userSession.games=(userSession.games||0)+1;
+  if(profit>0)userSession.wins=(userSession.wins||0)+1;
+  localStorage.setItem('rbx_plinko',JSON.stringify(userSession));
+  updateUI();
+
+  // Show result
+  if(profit>0){
+    toast(`🎉 ربحت ${win} ج! (${multi}x)`);
+    addHist(multi+'x','hw');
+  } else if(profit===0){
+    toast(`😐 استرجعت رهانك (${multi}x)`,'g');
+    addHist(multi+'x','hw');
+  } else {
+    toast(`😔 خسرت. حظاً أوفر المرة القادمة (${multi}x)`,'r');
+    addHist(multi+'x','hl');
+  }
+
+  // Update results list
+  const rl=document.getElementById('results-list');
+  const row=document.createElement('div');
+  row.className='rp-row';
+  row.innerHTML=`<span style="color:#555">🎲 ${data.bet} ج</span><span style="color:${multi};">${multi}x</span><span style="${profit>=0?'color:#4ade80':'color:#f87171'}">${profit>=0?'+':''}${profit} ج</span>`;
+  rl.prepend(row);
+
+  dropping=false;pendingGameId=null;
+  document.getElementById('drop-btn').disabled=false;
+  document.getElementById('queue-info').innerHTML='<span class="qi-txt">🟢 جاهز للعب! اضغط للإرسال</span><span class="qi-badge">جديد</span>';
+}
+
+function addHist(v,cls){
+  const h=document.createElement('span');
+  h.className='hchip '+cls;h.textContent=v;
+  document.getElementById('hist').prepend(h);
+}
+
+// ---- BALL ANIMATION ----
+async function animateBall(targetSlot){
+  return new Promise(resolve=>{
+    const board=document.getElementById('board');
+    const ball=document.getElementById('ball');
+    const W=board.offsetWidth||340,H=260;
+    const slotPct=targetSlot/(SLOTS.length-1);
+    const targetX=20+slotPct*(W-40);
+
+    ball.style.display='block';
+    ball.style.left=(W/2)+'px';
+    ball.style.top='10px';
+
+    let step=0;const STEPS=12;
+    const startX=W/2;
+    const moveX=(targetX-startX)/STEPS;
+
+    const animate=()=>{
+      if(step>=STEPS){
+        ball.style.left=targetX+'px';
+        ball.style.top=(H-10)+'px';
+        // Highlight slot
+        const slots=document.querySelectorAll('.slot');
+        if(slots[targetSlot]){
+          slots[targetSlot].classList.add('active-slot');
+          setTimeout(()=>slots[targetSlot].classList.remove('active-slot'),600);
+        }
+        setTimeout(()=>{ball.style.display='none';resolve();},800);
+        return;
+      }
+      const y=10+(step*(H-30)/STEPS);
+      const x=startX+moveX*step+(Math.random()-0.5)*8;
+      ball.style.left=x+'px';ball.style.top=y+'px';
+      // Glow nearby pins
+      board.querySelectorAll('.pin').forEach(p=>{
+        const pr=p.getBoundingClientRect();
+        const br=board.getBoundingClientRect();
+        const px=pr.left-br.left,py=pr.top-br.top;
+        const dist=Math.sqrt((px-x)**2+(py-y)**2);
+        p.classList.toggle('glow',dist<30);
+      });
+      step++;
+      setTimeout(animate,130);
+    };
+    animate();
+  });
+}
+
+// Init
+if(userSession)showGame();
+</script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>RBX Store | روبوكس بأسعار منافسة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#00b06b;--g2:#00d47e;--y:#fbbf24;--bg:#050a06;
+  --card:rgba(0,20,10,.95);--bdr:rgba(0,176,107,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:#fff;font-family:'Cairo',sans-serif;overflow-x:hidden;min-height:100vh}
+
+/* GRID BG */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,176,107,.035)1px,transparent 1px),linear-gradient(90deg,rgba(0,176,107,.035)1px,transparent 1px);
+  background-size:40px 40px}
+body::after{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:500px;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse,rgba(0,176,107,.15)0%,transparent 70%)}
+
+.wrap{max-width:480px;margin:0 auto;padding:14px 14px 90px;position:relative;z-index:10}
+
+/* HEADER */
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 0;margin-bottom:16px}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-ico{width:40px;height:40px;background:linear-gradient(135deg,#00b06b,#005c38);border-radius:.85rem;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 0 20px rgba(0,176,107,.3)}
+.logo-text{font-size:1.3rem;font-weight:900;letter-spacing:-1px}
+.logo-text em{color:var(--g);font-style:normal}
+.nav-links{display:flex;gap:6px}
+.nav-link{padding:7px 12px;border-radius:2rem;font-family:'Cairo',sans-serif;font-size:.72rem;font-weight:700;text-decoration:none;transition:all .2s;color:#555;border:1px solid rgba(255,255,255,.06)}
+.nav-link:hover,.nav-link.active{background:rgba(0,176,107,.1);color:var(--g);border-color:rgba(0,176,107,.3)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,rgba(0,176,107,.08)0%,rgba(0,20,10,.98)60%);border:1px solid rgba(0,176,107,.18);border-radius:2rem;padding:24px 18px;margin-bottom:14px;position:relative;overflow:hidden;text-align:center}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(0,176,107,.12),transparent 70%)}
+.hero::after{content:'🎮';position:absolute;bottom:10px;left:16px;font-size:4rem;opacity:.07;pointer-events:none}
+.hero-badge{background:rgba(0,176,107,.12);border:1px solid rgba(0,176,107,.25);border-radius:2rem;padding:4px 14px;font-size:.65rem;font-weight:900;color:var(--g);letter-spacing:2px;display:inline-block;margin-bottom:12px}
+.hero-title{font-size:2rem;font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:8px}
+.hero-title em{color:var(--g);font-style:normal}
+.hero-sub{font-size:.78rem;color:#555;margin-bottom:18px;line-height:1.6}
+.hero-stats{display:flex;justify-content:center;gap:20px}
+.hs{text-align:center}
+.hsv{font-size:1.4rem;font-weight:900;color:var(--g)}
+.hsl{font-size:.6rem;color:#444;text-transform:uppercase;letter-spacing:1px}
+
+/* PACKAGES */
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.st{font-size:.72rem;font-weight:900;color:#444;text-transform:uppercase;letter-spacing:2px}
+.sbadge{background:rgba(0,176,107,.08);border:1px solid rgba(0,176,107,.2);border-radius:2rem;padding:4px 10px;font-size:.6rem;font-weight:700;color:var(--g)}
+
+.pkgs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.pkg{background:var(--card);border:1px solid var(--bdr);border-radius:1.5rem;padding:16px 12px;text-align:center;position:relative;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block;color:white}
+.pkg::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,176,107,.06),transparent);opacity:0;transition:opacity .2s}
+.pkg:active::before{opacity:1}
+.pkg:active{transform:scale(.97)}
+.pkg.popular{border-color:rgba(0,176,107,.4);box-shadow:0 0 20px rgba(0,176,107,.1)}
+.pkg-badge{position:absolute;top:10px;left:10px;background:var(--g);color:#000;font-size:.55rem;font-weight:900;padding:3px 8px;border-radius:2rem;letter-spacing:.5px}
+.pkg-rbx{font-size:.6rem;color:#444;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px}
+.pkg-amount{font-size:1.8rem;font-weight:900;color:var(--g);letter-spacing:-1px;line-height:1}
+.pkg-rbx-label{font-size:.65rem;color:#555;margin-bottom:10px}
+.pkg-divider{height:1px;background:rgba(255,255,255,.05);margin:10px 0}
+.pkg-price{font-size:1.1rem;font-weight:900;color:white}
+.pkg-price-label{font-size:.58rem;color:#444}
+.pkg-btn{width:100%;background:linear-gradient(135deg,#00b06b,#008a52);color:white;border:none;border-radius:.85rem;padding:9px;font-family:'Cairo',sans-serif;font-size:.78rem;font-weight:900;cursor:pointer;margin-top:10px;transition:all .2s;box-shadow:0 4px 14px rgba(0,176,107,.2)}
+.pkg-btn:hover{box-shadow:0 6px 20px rgba(0,176,107,.35)}
+
+/* TRUST BADGES */
+.trust{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.tb{background:var(--card);border:1px solid var(--bdr);border-radius:1.1rem;padding:12px 8px;text-align:center}
+.tb-ico{font-size:1.4rem;margin-bottom:4px}
+.tb-txt{font-size:.62rem;color:#555;line-height:1.3}
+.tb-txt strong{display:block;color:#888;font-size:.68rem;margin-bottom:2px}
+
+/* REVIEWS */
+.rev-card{background:var(--card);border:1px solid var(--bdr);border-radius:1.2rem;padding:14px;margin-bottom:8px}
+.rev-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.rev-name{font-size:.8rem;font-weight:900}
+.stars{color:#fbbf24;font-size:.75rem}
+.rev-txt{font-size:.72rem;color:#555;line-height:1.5}
+
+/* HOW IT WORKS */
+.how-card{background:var(--card);border:1px solid var(--bdr);border-radius:1.4rem;padding:16px;margin-bottom:14px}
+.how-step{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.how-step:last-child{border-bottom:none;padding-bottom:0}
+.step-num{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#00b06b,#005c38);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:900;flex-shrink:0;box-shadow:0 0 12px rgba(0,176,107,.25)}
+.step-info .step-title{font-size:.84rem;font-weight:900;margin-bottom:2px}
+.step-info .step-desc{font-size:.66rem;color:#444;line-height:1.4}
+
+/* PLINKO PROMO */
+.plinko-promo{background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(5,10,6,.98));border:1px solid rgba(251,191,36,.2);border-radius:1.5rem;padding:18px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:white;transition:all .2s}
+.plinko-promo:active{transform:scale(.98)}
+.pp-left .pp-badge{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2);border-radius:2rem;padding:3px 10px;font-size:.6rem;font-weight:900;color:#fbbf24;display:inline-block;margin-bottom:6px}
+.pp-left .pp-title{font-size:1rem;font-weight:900}
+.pp-left .pp-sub{font-size:.68rem;color:#666;margin-top:2px}
+.pp-right{font-size:2.5rem}
+
+/* NAV */
+.bot-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(3,7,4,.96);backdrop-filter:blur(20px);border-top:1px solid rgba(0,176,107,.08);display:flex;justify-content:space-around;padding:10px 4px;padding-bottom:max(10px,env(safe-area-inset-bottom));z-index:1000}
+.bnl{font-size:9px;color:#2a2a2a;text-align:center;text-decoration:none;padding:5px 9px;border-radius:1.5rem;transition:all .2s}
+.bnl.active{color:var(--g);background:rgba(0,176,107,.1);font-weight:900}
+.bni{font-size:1.1rem;display:block;margin-bottom:1px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <div class="logo">
+      <div class="logo-ico">💎</div>
+      <div class="logo-text"><em>RBX</em>Store</div>
+    </div>
+    <div class="nav-links">
+      <a href="plinko.html" class="nav-link">🎰 بلينكو</a>
+      <a href="admin.html" class="nav-link">⚙️</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">✅ موثوق • سريع • آمن</div>
+    <div class="hero-title">اشتري <em>روبوكس</em><br>بأرخص سعر</div>
+    <div class="hero-sub">توصيل فوري خلال دقائق • دفع محلي سهل<br>أكثر من 500 عميل راضي</div>
+    <div class="hero-stats">
+      <div class="hs"><div class="hsv">500+</div><div class="hsl">عميل</div></div>
+      <div class="hs"><div class="hsv">5 دقائق</div><div class="hsl">توصيل</div></div>
+      <div class="hs"><div class="hsv">24/7</div><div class="hsl">دعم</div></div>
+    </div>
+  </div>
+
+  <!-- PACKAGES -->
+  <div class="sh">
+    <div class="st">📦 الباقات المتاحة</div>
+    <div class="sbadge">جميع الأسعار بالجنيه</div>
+  </div>
+  <div class="pkgs">
+    <a href="buy.html?pkg=400" class="pkg">
+      <div class="pkg-rbx">روبوكس</div>
+      <div class="pkg-amount">400</div>
+      <div class="pkg-rbx-label">Robux</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-price">25 ج</div>
+      <div class="pkg-price-label">السعر</div>
+      <button class="pkg-btn">شراء الآن 🛒</button>
+    </a>
+    <a href="buy.html?pkg=800" class="pkg popular">
+      <div class="pkg-badge">⭐ الأشهر</div>
+      <div class="pkg-rbx">روبوكس</div>
+      <div class="pkg-amount">800</div>
+      <div class="pkg-rbx-label">Robux</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-price">45 ج</div>
+      <div class="pkg-price-label">السعر</div>
+      <button class="pkg-btn">شراء الآن 🛒</button>
+    </a>
+    <a href="buy.html?pkg=1700" class="pkg">
+      <div class="pkg-rbx">روبوكس</div>
+      <div class="pkg-amount">1700</div>
+      <div class="pkg-rbx-label">Robux</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-price">90 ج</div>
+      <div class="pkg-price-label">السعر</div>
+      <button class="pkg-btn">شراء الآن 🛒</button>
+    </a>
+    <a href="buy.html?pkg=4500" class="pkg">
+      <div class="pkg-badge">🔥 وفّر أكثر</div>
+      <div class="pkg-rbx">روبوكس</div>
+      <div class="pkg-amount">4500</div>
+      <div class="pkg-rbx-label">Robux</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-price">220 ج</div>
+      <div class="pkg-price-label">السعر</div>
+      <button class="pkg-btn">شراء الآن 🛒</button>
+    </a>
+  </div>
+
+  <!-- CUSTOM -->
+  <div class="sh" style="margin-bottom:8px">
+    <div class="st">🎯 كمية مخصصة</div>
+  </div>
+  <div style="background:var(--card);border:1px solid var(--bdr);border-radius:1.4rem;padding:16px;margin-bottom:14px;display:flex;gap:10px;align-items:center">
+    <input id="custom-rbx" type="number" min="400" step="100" placeholder="أدخل الكمية..." style="flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:11px 14px;color:white;font-family:'Cairo',sans-serif;font-size:.9rem;outline:none">
+    <button onclick="buyCustom()" style="background:linear-gradient(135deg,#00b06b,#008a52);color:white;border:none;border-radius:1rem;padding:11px 18px;font-family:'Cairo',sans-serif;font-size:.85rem;font-weight:900;cursor:pointer;white-space:nowrap;box-shadow:0 4px 14px rgba(0,176,107,.2)">حساب 💰</button>
+  </div>
+
+  <!-- PLINKO PROMO -->
+  <a href="plinko.html" class="plinko-promo">
+    <div class="pp-left">
+      <div class="pp-badge">🎮 جديد</div>
+      <div class="pp-title">العب بلينكو</div>
+      <div class="pp-sub">اربح روبوكس مجاناً! 🎁</div>
+    </div>
+    <div class="pp-right">🎰</div>
+  </a>
+
+  <!-- HOW IT WORKS -->
+  <div class="sh"><div class="st">📋 كيف يعمل</div></div>
+  <div class="how-card">
+    <div class="how-step">
+      <div class="step-num">1</div>
+      <div class="step-info"><div class="step-title">اختر الباقة</div><div class="step-desc">اختر الكمية المناسبة من قائمة الباقات</div></div>
+    </div>
+    <div class="how-step">
+      <div class="step-num">2</div>
+      <div class="step-info"><div class="step-title">حوّل الفلوس</div><div class="step-desc">حوّل المبلغ لرقمنا عبر أي محفظة إلكترونية</div></div>
+    </div>
+    <div class="how-step">
+      <div class="step-num">3</div>
+      <div class="step-info"><div class="step-title">ابعت الإيصال</div><div class="step-desc">ارفع صورة التحويل مع يوزرنيمك</div></div>
+    </div>
+    <div class="how-step">
+      <div class="step-num">4</div>
+      <div class="step-info"><div class="step-title">استلم الروبوكس</div><div class="step-desc">الأدمن يراجع ويودّع في حسابك فوراً ✅</div></div>
+    </div>
+  </div>
+
+  <!-- TRUST -->
+  <div class="trust">
+    <div class="tb"><div class="tb-ico">🔒</div><div class="tb-txt"><strong>آمن 100%</strong>معاملات موثوقة</div></div>
+    <div class="tb"><div class="tb-ico">⚡</div><div class="tb-txt"><strong>سريع</strong>خلال دقائق</div></div>
+    <div class="tb"><div class="tb-ico">💬</div><div class="tb-txt"><strong>دعم 24/7</strong>نرد دايماً</div></div>
+  </div>
+
+  <!-- REVIEWS -->
+  <div class="sh"><div class="st">⭐ آراء العملاء</div></div>
+  <div class="rev-card">
+    <div class="rev-top"><div class="rev-name">Ahmed_Gamer</div><div class="stars">★★★★★</div></div>
+    <div class="rev-txt">وصلني الروبوكس في أقل من 5 دقائق، خدمة ممتازة 🔥</div>
+  </div>
+  <div class="rev-card">
+    <div class="rev-top"><div class="rev-name">Sara_RBX</div><div class="stars">★★★★★</div></div>
+    <div class="rev-txt">أرخص سعر لقيته وتعاملت مع ناس محترمين، هشتري تاني بكيفي</div>
+  </div>
+  <div class="rev-card">
+    <div class="rev-top"><div class="rev-name">Pro_Player99</div><div class="stars">★★★★☆</div></div>
+    <div class="rev-txt">تمام والله، السعر كويس والخدمة سريعة 👍</div>
+  </div>
+</div>
+
+<div class="bot-nav">
+  <a href="index.html" class="bnl active"><span class="bni">🏠</span>الرئيسية</a>
+  <a href="buy.html" class="bnl"><span class="bni">🛒</span>شراء</a>
+  <a href="plinko.html" class="bnl"><span class="bni">🎰</span>بلينكو</a>
+  <a href="admin.html" class="bnl"><span class="bni">⚙️</span>أدمن</a>
+</div>
+
+<script>
+const PRICES={400:25,800:45,1700:90,4500:220};
+window.buyCustom=()=>{
+  const v=parseInt(document.getElementById('custom-rbx').value);
+  if(!v||v<400){alert('الحد الأدنى 400 روبوكس');return;}
+  // Find closest package or calculate proportional
+  const baseRate=25/400;
+  const price=Math.ceil(v*baseRate);
+  if(price<25){alert('الحد الأدنى للتحويل 25 جنيه');return;}
+  window.location.href=`buy.html?pkg=${v}&price=${price}`;
+};
+</script>
+</body>
+</html>

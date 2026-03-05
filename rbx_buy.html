@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>إتمام الشراء | RBX Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--g:#00b06b;--g2:#00d47e;--y:#fbbf24;--bg:#050a06;--card:rgba(0,20,10,.95);--bdr:rgba(0,176,107,.12)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:#fff;font-family:'Cairo',sans-serif;overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(0,176,107,.03)1px,transparent 1px),linear-gradient(90deg,rgba(0,176,107,.03)1px,transparent 1px);background-size:40px 40px}
+body::after{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:500px;z-index:0;pointer-events:none;background:radial-gradient(ellipse,rgba(0,176,107,.12)0%,transparent 70%)}
+.wrap{max-width:480px;margin:0 auto;padding:14px 14px 90px;position:relative;z-index:10}
+.hdr{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding:10px 0}
+.back{width:38px;height:38px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#666;font-size:1rem;transition:all .2s}
+.back:active{background:rgba(0,176,107,.1);color:var(--g)}
+.htitle{font-size:1.1rem;font-weight:900}
+
+/* ORDER SUMMARY */
+.order-card{background:linear-gradient(135deg,rgba(0,176,107,.08),rgba(0,20,10,.98));border:1px solid rgba(0,176,107,.25);border-radius:1.75rem;padding:20px 18px;margin-bottom:14px;position:relative;overflow:hidden}
+.order-card::before{content:'';position:absolute;top:-60px;right:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(0,176,107,.1),transparent 70%)}
+.order-rbx{font-size:.62rem;color:#444;text-transform:uppercase;letter-spacing:3px;margin-bottom:4px}
+.order-amount{font-size:3rem;font-weight:900;color:var(--g);letter-spacing:-2px;line-height:1}
+.order-label{font-size:.7rem;color:#555;margin-bottom:16px}
+.order-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.order-row:last-child{border-bottom:none;padding-bottom:0}
+.or-key{font-size:.75rem;color:#555}
+.or-val{font-size:.82rem;font-weight:900}
+.or-val.price{color:var(--y);font-size:1rem}
+.or-val.green{color:var(--g)}
+
+/* STEPS */
+.step-card{background:var(--card);border:1px solid var(--bdr);border-radius:1.4rem;padding:18px;margin-bottom:12px}
+.step-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.step-n{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00b06b,#005c38);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:900;flex-shrink:0;box-shadow:0 0 12px rgba(0,176,107,.25)}
+.step-title{font-size:.9rem;font-weight:900}
+.step-sub{font-size:.65rem;color:#444;margin-top:1px}
+
+/* TRANSFER BOX */
+.transfer-box{background:rgba(0,176,107,.06);border:2px dashed rgba(0,176,107,.25);border-radius:1.2rem;padding:16px;text-align:center;margin-bottom:12px;cursor:pointer;transition:all .2s;position:relative}
+.transfer-box:active{border-color:rgba(0,176,107,.5);background:rgba(0,176,107,.1)}
+.transfer-num{font-size:1.6rem;font-weight:900;color:var(--g);letter-spacing:2px;margin-bottom:4px;font-family:monospace}
+.transfer-label{font-size:.65rem;color:#555;margin-bottom:8px}
+.transfer-type{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.tt{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:2rem;padding:4px 10px;font-size:.6rem;color:#555}
+.copy-btn{background:rgba(0,176,107,.12);border:1px solid rgba(0,176,107,.25);color:var(--g);border-radius:.75rem;padding:7px 18px;font-family:'Cairo',sans-serif;font-size:.75rem;font-weight:900;cursor:pointer;margin-top:10px;transition:all .2s}
+.copy-btn.copied{background:rgba(0,176,107,.25)}
+.min-note{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.15);border-radius:.8rem;padding:8px 12px;font-size:.68rem;color:#fbbf24;margin-top:8px;text-align:right}
+
+/* INPUTS */
+.inp-label{font-size:.72rem;font-weight:900;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:block}
+.inp{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:1rem;padding:12px 14px;color:white;font-family:'Cairo',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s,background .2s;margin-bottom:12px}
+.inp:focus{border-color:rgba(0,176,107,.5);background:rgba(0,176,107,.04)}
+.inp::placeholder{color:#252525;font-size:.8rem}
+
+/* FILE UPLOAD */
+.file-drop{background:rgba(255,255,255,.03);border:2px dashed rgba(255,255,255,.08);border-radius:1.2rem;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;position:relative;margin-bottom:12px}
+.file-drop.has-file{border-color:rgba(0,176,107,.4);background:rgba(0,176,107,.05)}
+.file-drop:hover{border-color:rgba(0,176,107,.3)}
+.file-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.fd-ico{font-size:2rem;margin-bottom:6px}
+.fd-title{font-size:.82rem;font-weight:700}
+.fd-sub{font-size:.65rem;color:#444;margin-top:3px}
+.preview-img{width:100%;border-radius:.85rem;max-height:200px;object-fit:cover;display:none}
+
+/* SUBMIT */
+.submit-btn{width:100%;background:linear-gradient(135deg,#00b06b,#008a52);color:white;border:none;border-radius:1.2rem;padding:15px;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;transition:all .2s;box-shadow:0 8px 28px rgba(0,176,107,.25);display:flex;align-items:center;justify-content:center;gap:8px}
+.submit-btn:active{transform:scale(.98)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.spin{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top:2px solid white;border-radius:50%;animation:sp .7s linear infinite;display:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+.submit-btn.ld .spin{display:block}
+.submit-btn.ld .btxt{display:none}
+
+/* SUCCESS */
+.success-screen{display:none;text-align:center;padding:40px 20px}
+.success-screen.show{display:block}
+.suc-ico{font-size:4rem;animation:bounce .6s ease;display:block}
+@keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+
+/* TOAST */
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-80px);background:#111;border:1px solid rgba(255,255,255,.07);color:white;padding:10px 22px;border-radius:2rem;font-size:.8rem;font-weight:700;z-index:99999;transition:transform .3s;white-space:nowrap;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.g{border-right:3px solid #22c55e}
+.toast.r{border-right:3px solid #dc2626}
+
+.bot-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(3,7,4,.96);backdrop-filter:blur(20px);border-top:1px solid rgba(0,176,107,.08);display:flex;justify-content:space-around;padding:10px 4px;padding-bottom:max(10px,env(safe-area-inset-bottom));z-index:1000}
+.bnl{font-size:9px;color:#2a2a2a;text-align:center;text-decoration:none;padding:5px 9px;border-radius:1.5rem;transition:all .2s}
+.bnl.active{color:var(--g);background:rgba(0,176,107,.1);font-weight:900}
+.bni{font-size:1.1rem;display:block;margin-bottom:1px}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<div class="wrap">
+  <div class="hdr">
+    <a href="index.html" class="back">←</a>
+    <div><div class="htitle">🛒 إتمام الشراء</div></div>
+  </div>
+
+  <!-- MAIN FORM -->
+  <div id="form-view">
+    <!-- ORDER SUMMARY -->
+    <div class="order-card">
+      <div class="order-rbx">روبوكس المطلوبة</div>
+      <div class="order-amount" id="show-rbx">800</div>
+      <div class="order-label">Robux</div>
+      <div class="order-row">
+        <span class="or-key">المبلغ المطلوب</span>
+        <span class="or-val price" id="show-price">45 ج</span>
+      </div>
+      <div class="order-row">
+        <span class="or-key">وقت التوصيل</span>
+        <span class="or-val green">⚡ 5-10 دقائق</span>
+      </div>
+      <div class="order-row">
+        <span class="or-key">الضمان</span>
+        <span class="or-val green">✅ مضمون 100%</span>
+      </div>
+    </div>
+
+    <!-- STEP 1: TRANSFER -->
+    <div class="step-card">
+      <div class="step-hdr">
+        <div class="step-n">1</div>
+        <div><div class="step-title">حوّل الفلوس</div><div class="step-sub">حوّل المبلغ لرقمنا الآن</div></div>
+      </div>
+      <div class="transfer-box">
+        <div class="transfer-label">ارسل المبلغ على هذا الرقم</div>
+        <div class="transfer-num" id="transfer-num">01012345678</div>
+        <div class="transfer-type">
+          <span class="tt">📱 فودافون كاش</span>
+          <span class="tt">📱 انستا باي</span>
+          <span class="tt">📱 اوبو</span>
+        </div>
+        <button class="copy-btn" id="copy-btn" onclick="copyNum()">📋 نسخ الرقم</button>
+      </div>
+      <div class="min-note">⚠️ الحد الأدنى للتحويل <strong>25 جنيه</strong> — لا ترسل أقل من كده</div>
+    </div>
+
+    <!-- STEP 2: UPLOAD -->
+    <div class="step-card">
+      <div class="step-hdr">
+        <div class="step-n">2</div>
+        <div><div class="step-title">ارفع صورة التحويل</div><div class="step-sub">صورة واضحة من الإيصال</div></div>
+      </div>
+      <div class="file-drop" id="file-drop" onclick="document.getElementById('file-inp').click()">
+        <input type="file" id="file-inp" accept="image/*" onchange="handleFile(event)">
+        <div class="fd-ico">📷</div>
+        <div class="fd-title">اضغط لرفع صورة الإيصال</div>
+        <div class="fd-sub">PNG, JPG, JPEG حتى 10MB</div>
+      </div>
+      <img class="preview-img" id="preview" src="" alt="preview">
+    </div>
+
+    <!-- STEP 3: USERNAME -->
+    <div class="step-card">
+      <div class="step-hdr">
+        <div class="step-n">3</div>
+        <div><div class="step-title">بيانات حسابك</div><div class="step-sub">اكتب بياناتك لإرسال الروبوكس</div></div>
+      </div>
+      <label class="inp-label">يوزرنيم Roblox</label>
+      <input class="inp" type="text" id="username" placeholder="YourUsername123" dir="ltr">
+      <label class="inp-label">رقم الهاتف (اختياري)</label>
+      <input class="inp" type="tel" id="phone" placeholder="للتواصل في حالة مشكلة" dir="ltr" inputmode="tel">
+      <label class="inp-label">ملاحظات (اختياري)</label>
+      <input class="inp" type="text" id="notes" placeholder="أي ملاحظة أو طلب خاص...">
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="submitOrder()">
+      <span class="btxt">✅ إرسال الطلب للأدمن</span>
+      <div class="spin"></div>
+    </button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="success-view">
+    <span class="suc-ico">✅</span>
+    <h2 style="font-size:1.4rem;font-weight:900;margin:16px 0 8px">تم إرسال طلبك!</h2>
+    <p style="font-size:.78rem;color:#555;line-height:1.7">الأدمن سيراجع طلبك خلال دقائق<br>وسيقوم بإيداع الروبوكس في حسابك ✅</p>
+    <div style="background:rgba(0,176,107,.08);border:1px solid rgba(0,176,107,.2);border-radius:1.2rem;padding:16px;margin:20px 0;text-align:right">
+      <div style="font-size:.72rem;color:#555;margin-bottom:4px">رقم الطلب</div>
+      <div style="font-size:1.1rem;font-weight:900;color:var(--g);font-family:monospace" id="order-id">—</div>
+    </div>
+    <a href="index.html" style="display:inline-block;background:linear-gradient(135deg,#00b06b,#008a52);color:white;text-decoration:none;border-radius:1rem;padding:13px 30px;font-weight:900;font-size:.9rem;box-shadow:0 6px 20px rgba(0,176,107,.25)">العودة للرئيسية 🏠</a>
+  </div>
+</div>
+
+<div class="bot-nav">
+  <a href="index.html" class="bnl"><span class="bni">🏠</span>الرئيسية</a>
+  <a href="buy.html" class="bnl active"><span class="bni">🛒</span>شراء</a>
+  <a href="plinko.html" class="bnl"><span class="bni">🎰</span>بلينكو</a>
+  <a href="admin.html" class="bnl"><span class="bni">⚙️</span>أدمن</a>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getDatabase, ref, push, get } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+const db=getDatabase(initializeApp({
+  apiKey:"AIzaSyCd6mOpEJyiUSAAhmm2NbhT80MMY0UQJcc",
+  databaseURL:"https://project-fe025bb5-b1cc-4b8f-93e-default-rtdb.firebaseio.com"
+}));
+
+// Get transfer number from admin settings
+const settRef=ref(db,'rbx_store/settings');
+get(settRef).then(s=>{
+  if(s.exists()&&s.val().transfer_num)
+    document.getElementById('transfer-num').textContent=s.val().transfer_num;
+});
+
+// Read URL params
+const params=new URLSearchParams(window.location.search);
+const PACKAGES={400:25,800:45,1700:90,4500:220};
+let rbx=parseInt(params.get('pkg'))||800;
+let price=parseInt(params.get('price'))||PACKAGES[rbx]||45;
+if(!price)price=Math.ceil(rbx*25/400);
+document.getElementById('show-rbx').textContent=rbx;
+document.getElementById('show-price').textContent=price+' ج';
+
+let imageBase64=null;
+
+function toast(m,t='g'){const e=document.getElementById('toast');e.textContent=m;e.className=`toast show ${t}`;setTimeout(()=>e.className='toast',2500);}
+
+window.copyNum=()=>{
+  const num=document.getElementById('transfer-num').textContent;
+  navigator.clipboard.writeText(num).then(()=>{
+    const btn=document.getElementById('copy-btn');
+    btn.textContent='✅ تم النسخ!';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='📋 نسخ الرقم';btn.classList.remove('copied');},2000);
+  });
+};
+
+window.handleFile=(e)=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  if(file.size>10*1024*1024){toast('❌ الصورة أكبر من 10MB','r');return;}
+  const reader=new FileReader();
+  reader.onload=(ev)=>{
+    imageBase64=ev.target.result;
+    const prev=document.getElementById('preview');
+    prev.src=imageBase64;prev.style.display='block';
+    document.getElementById('file-drop').classList.add('has-file');
+    document.querySelector('.fd-ico').textContent='✅';
+    document.querySelector('.fd-title').textContent='تم رفع الصورة!';
+  };
+  reader.readAsDataURL(file);
+};
+
+window.submitOrder=async()=>{
+  const username=document.getElementById('username').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const notes=document.getElementById('notes').value.trim();
+  if(!username){toast('❌ أدخل يوزرنيمك على Roblox','r');return;}
+  if(!imageBase64){toast('❌ ارفع صورة إيصال التحويل','r');return;}
+  if(price<25){toast('❌ الحد الأدنى للتحويل 25 جنيه','r');return;}
+
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;btn.classList.add('ld');
+
+  try{
+    const orderId='ORD-'+Date.now().toString(36).toUpperCase();
+    await push(ref(db,'rbx_store/orders'),{
+      orderId,username,phone,notes,
+      rbx,price,imageBase64,
+      status:'pending',
+      timestamp:Date.now(),
+      date:new Date().toLocaleString('ar-EG')
+    });
+    document.getElementById('form-view').style.display='none';
+    document.getElementById('success-view').classList.add('show');
+    document.getElementById('order-id').textContent=orderId;
+  }catch(err){
+    toast('❌ خطأ في الإرسال، حاول مجدداً','r');
+    btn.disabled=false;btn.classList.remove('ld');
+  }
+};
+</script>
+</body>
+</html>
